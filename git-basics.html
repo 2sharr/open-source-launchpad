@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Git basics — Open Source Launchpad</title>
+<meta name="description" content="Fork, clone, branch, commit, push, pull request. Everything you need for your first contribution and nothing you do not.">
+<meta property="og:title" content="Git basics — Open Source Launchpad">
+<meta property="og:description" content="Fork, clone, branch, commit, push, pull request. Everything you need for your first contribution and nothing you do not.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<script src="js/theme-toggle.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark" aria-hidden="true">🚀</span>
+      <span>Open Source Launchpad</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="git-basics.html" aria-current="page">Git basics</a>
+      <a href="pr-checklist.html">PR checklist</a>
+      <a href="wall.html">Contributor wall</a>
+      <button class="theme-toggle" type="button" aria-label="Switch theme">☾</button>
+    </nav>
+  </div>
+</header>
+
+<main class="site-main" id="main">
+  <h1>Git basics</h1>
+  <p class="lead prose">
+    Everything you need for your first contribution, and nothing you do not.
+    You can follow this on any operating system.
+  </p>
+
+  <div class="callout callout--tip">
+    <p class="callout__title">Before you start</p>
+    <p>You need a <a href="https://github.com/signup">GitHub account</a> and
+    <a href="https://git-scm.com/downloads">Git installed</a>. Check Git is
+    working by running <code>git --version</code> in a terminal. If that prints
+    a version number, you are ready.</p>
+  </div>
+
+  <h2>Tell Git who you are</h2>
+  <p>Do this once, ever. Git stamps your name on every commit you make.</p>
+  <pre><code>git config --global user.name "Your Name"
+git config --global user.email "your-email@example.com"</code></pre>
+  <p class="muted">Use the same email as your GitHub account, or your commits
+  will not be linked to your profile.</p>
+
+  <h2>1. Fork the project</h2>
+  <p>On the project's GitHub page, click <strong>Fork</strong> in the top right.
+  You now have your own copy at
+  <code>github.com/YOUR-USERNAME/project-name</code>.</p>
+  <p>You can do anything you like to your fork. The original is untouched.</p>
+
+  <h2>2. Clone your fork</h2>
+  <p>Cloning downloads your fork onto your computer.</p>
+  <pre><code>git clone https://github.com/YOUR-USERNAME/project-name.git
+cd project-name</code></pre>
+
+  <h3>Add the original as "upstream"</h3>
+  <p>This lets you pull in changes other people have made since you forked.</p>
+  <pre><code>git remote add upstream https://github.com/github-community-gitam/project-name.git
+git remote -v</code></pre>
+  <p>You should see <code>origin</code> (your fork) and <code>upstream</code>
+  (the original).</p>
+
+  <h2>3. Make a branch</h2>
+  <p>Never work directly on <code>main</code>. A branch keeps your change
+  separate and makes it easy to work on more than one thing.</p>
+  <pre><code>git checkout -b feat/add-my-name</code></pre>
+
+  <h3>Naming your branch</h3>
+  <table>
+    <thead>
+      <tr><th scope="col">Prefix</th><th scope="col">Use it for</th><th scope="col">Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>feat/</code></td><td>Something new</td><td><code>feat/dark-mode</code></td></tr>
+      <tr><td><code>fix/</code></td><td>Something broken</td><td><code>fix/footer-link</code></td></tr>
+      <tr><td><code>docs/</code></td><td>Documentation</td><td><code>docs/setup-guide</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. Make your change</h2>
+  <p>Edit the file in whatever editor you like. Then see what Git noticed:</p>
+  <pre><code>git status
+git diff</code></pre>
+  <p><code>git status</code> lists which files changed.
+  <code>git diff</code> shows exactly what changed inside them.</p>
+
+  <h2>5. Commit</h2>
+  <p>A commit is a saved snapshot with a message explaining why.</p>
+  <pre><code>git add contributors/your-username.json
+git commit -m "feat: add your-username to the contributor wall"</code></pre>
+
+  <div class="callout callout--warn">
+    <p class="callout__title">Do not use <code>git add .</code> by habit</p>
+    <p>It adds everything, including files you did not mean to share. Name the
+    files you actually changed. This is the single easiest way to look like you
+    know what you are doing.</p>
+  </div>
+
+  <h3>Writing a good commit message</h3>
+  <pre><code>fix: footer link pointed at the wrong page
+
+The Discord link in the footer went to the old server.
+Updated it to the current invite.
+
+Closes #42</code></pre>
+  <p>Format: <code>type: what changed</code>, lowercase, present tense. Types
+  are <code>feat</code>, <code>fix</code>, <code>docs</code>,
+  <code>test</code>, <code>ci</code>, <code>chore</code>.</p>
+
+  <h2>6. Push</h2>
+  <pre><code>git push origin feat/add-my-name</code></pre>
+  <p>Your branch is now on GitHub, in your fork.</p>
+
+  <h2>7. Open the pull request</h2>
+  <p>Go to your fork on GitHub. There will be a
+  <strong>"Compare &amp; pull request"</strong> button. Click it, fill in the
+  template, and make sure your description contains
+  <code>Closes #&lt;issue-number&gt;</code>.</p>
+  <p>Then wait. A maintainer replies within 48 hours.</p>
+
+  <hr>
+
+  <h2>Keeping your fork up to date</h2>
+  <p>Before starting anything new, pull in what has changed:</p>
+  <pre><code>git checkout main
+git pull upstream main
+git push origin main</code></pre>
+
+  <h2>When something goes wrong</h2>
+
+  <h3>I committed to main by mistake</h3>
+  <pre><code>git branch feat/my-work
+git reset --hard upstream/main
+git checkout feat/my-work</code></pre>
+  <p>Your work is safe on the new branch.</p>
+
+  <h3>I need to undo my last commit but keep the changes</h3>
+  <pre><code>git reset --soft HEAD~1</code></pre>
+
+  <h3>I want to throw away my changes to a file</h3>
+  <pre><code>git restore path/to/file</code></pre>
+  <p class="muted">This cannot be undone. Be sure.</p>
+
+  <h3>Git says I have a merge conflict</h3>
+  <p>Two people changed the same lines. Git marks the spot in the file:</p>
+  <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+your version
+=======
+their version
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; upstream/main</code></pre>
+  <p>Edit the file so it reads how it should, delete all three marker lines,
+  then:</p>
+  <pre><code>git add the-file
+git commit</code></pre>
+
+  <h3>I am completely lost</h3>
+  <p>Two commands that tell you where you are:</p>
+  <pre><code>git status
+git log --oneline -10</code></pre>
+  <p>And if you would rather have a person: come to a
+  <strong>PR Debug Clinic</strong>, Monday 12 or Wednesday 21 October. Station A
+  is entirely for Git problems and everyone there has had the same one.</p>
+
+  <div class="callout callout--stop">
+    <p class="callout__title">Nothing you do here is unrecoverable</p>
+    <p>Git keeps almost everything, almost forever. Even a commit you "deleted"
+    is usually still there in <code>git reflog</code>. Experiment freely.</p>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <h3>Open Source Launchpad</h3>
+      <p class="muted">Your first pull request starts here.<br>
+      Built by GITHUB Community GITAM.</p>
+    </div>
+    <div>
+      <h3>Learn</h3>
+      <ul>
+        <li><a href="git-basics.html">Git basics</a></li>
+        <li><a href="pr-checklist.html">PR checklist</a></li>
+        <li><a href="wall.html">Contributor wall</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Contribute</h3>
+      <ul>
+        <li><a href="https://github.com/github-community-gitam/open-source-launchpad/issues">Open issues</a></li>
+        <li><a href="https://github.com/github-community-gitam/open-source-launchpad/blob/main/CONTRIBUTING.md">Contributing guide</a></li>
+        <li><a href="https://github.com/github-community-gitam/terminal-arcade">Terminal Arcade</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Hacktoberfest</h3>
+      <ul>
+        <li><a href="https://hacktoberfest.com">Official site</a></li>
+        <li><a href="https://hacktoberfest.com/participation/">The rules</a></li>
+        <li><a href="https://github.com/github-community-gitam">Our org</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="js/copy-code.js"></script>
+
+</body>
+</html>

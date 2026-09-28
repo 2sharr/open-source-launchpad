@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pull request checklist — Open Source Launchpad</title>
+<meta name="description" content="Run through this before you open a pull request. The difference between merged in an hour and three days of back and forth.">
+<meta property="og:title" content="Pull request checklist — Open Source Launchpad">
+<meta property="og:description" content="Run through this before you open a pull request. The difference between merged in an hour and three days of back and forth.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<script src="js/theme-toggle.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark" aria-hidden="true">🚀</span>
+      <span>Open Source Launchpad</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="git-basics.html">Git basics</a>
+      <a href="pr-checklist.html" aria-current="page">PR checklist</a>
+      <a href="wall.html">Contributor wall</a>
+      <button class="theme-toggle" type="button" aria-label="Switch theme">☾</button>
+    </nav>
+  </div>
+</header>
+
+<main class="site-main" id="main">
+  <h1>Pull request checklist</h1>
+  <p class="lead prose">
+    Run through this before you click "Create pull request". It is the
+    difference between a PR merged in an hour and one that goes back and
+    forth for three days.
+  </p>
+  <p class="muted">Ticks are saved in your browser, so you can come back to
+  this page.</p>
+
+  <h2>Before you open it</h2>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c1"><label for="c1"><strong>The issue is assigned to me.</strong> I commented <code>/claim</code> and a bot assigned it. A PR on an unclaimed issue gets closed.</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2"><strong>I am on a branch, not <code>main</code>.</strong> <code>git status</code> tells me which.</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3"><strong>My branch is named properly</strong> — <code>feat/</code>, <code>fix/</code>, or <code>docs/</code> followed by a short description.</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4"><strong>I only changed files this issue is about.</strong> <code>git diff --stat upstream/main</code> shows nothing unexpected.</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5"><strong>I ran the project and my change works.</strong> Not "it should work" — I actually ran it.</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6"><strong>Tests pass</strong> if the project has them.</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7"><strong>No debugging leftovers</strong> — no stray <code>print()</code>, <code>console.log()</code>, or commented-out code.</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8"><strong>No secrets.</strong> No API keys, tokens, passwords, or <code>.env</code> files.</label></li>
+  </ul>
+
+  <h2>Writing the pull request</h2>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c9"><label for="c9"><strong>The description contains <code>Closes #&lt;number&gt;</code>.</strong> This is required. Without it the PR gets closed.</label></li>
+    <li><input type="checkbox" id="c10"><label for="c10"><strong>The title says what changed</strong>, e.g. "fix: footer Discord link pointed at the old server" — not "update" or "changes".</label></li>
+    <li><input type="checkbox" id="c11"><label for="c11"><strong>I explained how I tested it.</strong> One line is enough: "Opened index.html in Chrome and Firefox at 375px, nav still works".</label></li>
+    <li><input type="checkbox" id="c12"><label for="c12"><strong>Screenshots for anything visual</strong>, terminal output for anything that runs in a terminal. This is the fastest way to get merged.</label></li>
+    <li><input type="checkbox" id="c13"><label for="c13"><strong>I filled in the template</strong> rather than deleting it.</label></li>
+  </ul>
+
+  <h2>After you open it</h2>
+  <ul class="checklist">
+    <li><input type="checkbox" id="c14"><label for="c14"><strong>The CI checks are green.</strong> If one is red, I clicked "Details" and read why.</label></li>
+    <li><input type="checkbox" id="c15"><label for="c15"><strong>I have notifications on</strong> so I see review comments.</label></li>
+    <li><input type="checkbox" id="c16"><label for="c16"><strong>If changes were requested, I pushed more commits to the same branch.</strong> The PR updates itself — I do not need to open a new one.</label></li>
+  </ul>
+
+  <hr>
+
+  <h2>What gets a PR rejected</h2>
+
+  <div class="callout callout--stop">
+    <p class="callout__title">These are marked as spam and do not count</p>
+    <ul>
+      <li>Changing whitespace, commas, or formatting in Markdown and nothing else</li>
+      <li>Adding your name or a link to a README without being asked to</li>
+      <li>AI-generated code pasted in without being read, that fails the linter or has no tests</li>
+      <li>A PR with no linked issue</li>
+      <li>Duplicating a pull request that is already open</li>
+      <li>Renaming variables or "improving" code nobody asked to change</li>
+    </ul>
+  </div>
+
+  <div class="callout callout--tip">
+    <p class="callout__title">These are always welcome</p>
+    <ul>
+      <li>Fixing a real bug, however small</li>
+      <li>Adding a test that was missing</li>
+      <li>Rewriting documentation that confused you, so it does not confuse the next person</li>
+      <li>Improving an unhelpful error message</li>
+      <li>Accessibility fixes</li>
+      <li>Telling us our setup instructions are wrong</li>
+    </ul>
+  </div>
+
+  <h2>What happens next</h2>
+  <ol class="steps">
+    <li>
+      <h3>Within 48 hours, a maintainer replies</h3>
+      <p>That is a commitment. If it has been longer, ping us in Discord — you
+      are not nagging, we dropped the ball.</p>
+    </li>
+    <li>
+      <h3>They may request changes</h3>
+      <p>This is the normal case, not a failure. It happens to people who have
+      been writing code for twenty years. Push another commit to the same
+      branch and the PR updates itself.</p>
+    </li>
+    <li>
+      <h3>It gets merged and labelled <code>hacktoberfest-accepted</code></h3>
+      <p>Your contribution is now part of the project, permanently, with your
+      name on it.</p>
+    </li>
+  </ol>
+
+  <div class="callout callout--tip">
+    <p class="callout__title">Four merged PRs earns Hacktoberfest rewards</p>
+    <p>Keep going. The second one is much easier than the first.</p>
+  </div>
+
+<script>
+// Remember which boxes are ticked, per viewer, in this browser only.
+(function () {
+  "use strict";
+  var KEY = "launchpad-pr-checklist";
+  var boxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { saved = {}; }
+
+  Array.prototype.forEach.call(boxes, function (box) {
+    if (saved[box.id]) box.checked = true;
+    box.addEventListener("change", function () {
+      saved[box.id] = box.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <h3>Open Source Launchpad</h3>
+      <p class="muted">Your first pull request starts here.<br>
+      Built by GITHUB Community GITAM.</p>
+    </div>
+    <div>
+      <h3>Learn</h3>
+      <ul>
+        <li><a href="git-basics.html">Git basics</a></li>
+        <li><a href="pr-checklist.html">PR checklist</a></li>
+        <li><a href="wall.html">Contributor wall</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Contribute</h3>
+      <ul>
+        <li><a href="https://github.com/github-community-gitam/open-source-launchpad/issues">Open issues</a></li>
+        <li><a href="https://github.com/github-community-gitam/open-source-launchpad/blob/main/CONTRIBUTING.md">Contributing guide</a></li>
+        <li><a href="https://github.com/github-community-gitam/terminal-arcade">Terminal Arcade</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Hacktoberfest</h3>
+      <ul>
+        <li><a href="https://hacktoberfest.com">Official site</a></li>
+        <li><a href="https://hacktoberfest.com/participation/">The rules</a></li>
+        <li><a href="https://github.com/github-community-gitam">Our org</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="js/copy-code.js"></script>
+
+</body>
+</html>

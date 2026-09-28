@@ -1,0 +1,40 @@
+# Welcomes first-time contributors so nobody feels ignored during the event.
+name: Greet new contributors
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            Welcome to GITHUB Community GITAM, and thanks for opening your first issue here.
+
+            A maintainer will get to this within **48 hours**. In the meantime:
+            - Read [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md)
+            - Want to work on something? Find an issue labelled `good first issue` and comment `/claim` on it
+            - Stuck on setup? Ask in our Discord, that is what it is for
+          pr-message: |
+            Congratulations on your first pull request to this repository.
+
+            Here is what happens next:
+            1. The checks below need to go green. If one is red, click **Details** to see why — that is normal, and fixing it is part of the work
+            2. A maintainer reviews within **48 hours** and may leave line comments
+            3. Once it is approved, we label it `hacktoberfest-accepted` and merge
+
+            Two things that get PRs closed, so please double-check:
+            - No `Closes #<issue>` in the description
+            - The issue was never assigned to you
+
+            Nice work getting this far. Most people never open their first PR.

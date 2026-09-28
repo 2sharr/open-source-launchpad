@@ -1,0 +1,44 @@
+# Rebuilds contributors/index.json whenever someone is added to the wall.
+#
+# The wall is a static page, so it cannot read a folder — it fetches one JSON
+# file. This keeps that file correct without anyone editing it by hand, which
+# is exactly what would cause merge conflicts during an event.
+name: Build contributor index
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "contributors/*.json"
+      - "scripts/build_contributors.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Rebuild the index
+        run: python3 scripts/build_contributors.py
+
+      - name: Commit it, if it changed
+        run: |
+          if git diff --quiet contributors/index.json; then
+            echo "index.json is already up to date — nothing to do."
+            exit 0
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add contributors/index.json
+          git commit -m "chore: rebuild contributor index [skip ci]"
+          git push
+          echo "Contributor index updated."

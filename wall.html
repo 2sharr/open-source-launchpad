@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contributor wall — Open Source Launchpad</title>
+<meta name="description" content="Everyone who has contributed to this project, and how to add yourself in about ten minutes.">
+<meta property="og:title" content="Contributor wall — Open Source Launchpad">
+<meta property="og:description" content="Everyone who has contributed to this project, and how to add yourself in about ten minutes.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<script src="js/theme-toggle.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark" aria-hidden="true">🚀</span>
+      <span>Open Source Launchpad</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="git-basics.html">Git basics</a>
+      <a href="pr-checklist.html">PR checklist</a>
+      <a href="wall.html" aria-current="page">Contributor wall</a>
+      <button class="theme-toggle" type="button" aria-label="Switch theme">☾</button>
+    </nav>
+  </div>
+</header>
+
+<main class="site-main" id="main">
+  <h1>Contributor wall</h1>
+  <p class="lead prose">
+    Everyone here made a pull request. For most of them it was the first one
+    they had ever made.
+  </p>
+
+  <div class="callout callout--tip">
+    <p class="callout__title">Add yourself — this is the easiest first PR there is</p>
+    <p>Create one small file with your name in it. Instructions are below the
+    wall. It takes about ten minutes, and you will have done every step of a
+    real contribution.</p>
+  </div>
+
+  <div class="wall-controls">
+    <label class="visually-hidden" for="wall-search">Search contributors</label>
+    <input class="wall-search" id="wall-search" type="search"
+           placeholder="Search by name, handle, or interest…"
+           autocomplete="off">
+    <span class="wall-count" id="wall-count" aria-live="polite">Loading…</span>
+  </div>
+
+  <ul class="wall" id="wall">
+    <li class="wall-empty">Loading contributors…</li>
+  </ul>
+
+  <hr>
+
+  <h2 id="add-yourself">How to add yourself</h2>
+  <p class="prose">
+    Every contributor has their own file in the <code>contributors/</code>
+    folder. That is deliberate: because nobody shares a file, eighty people can
+    add themselves at the same time and none of you will ever get a merge
+    conflict.
+  </p>
+
+  <ol class="steps">
+    <li>
+      <h3>Fork and clone the repository</h3>
+      <pre><code>git clone https://github.com/YOUR-USERNAME/open-source-launchpad.git
+cd open-source-launchpad
+git checkout -b feat/add-YOUR-USERNAME</code></pre>
+    </li>
+    <li>
+      <h3>Copy the template</h3>
+      <p>Copy <code>contributors/_TEMPLATE.json</code> to
+      <code>contributors/your-github-username.json</code>. Use your real GitHub
+      username as the filename, all lowercase.</p>
+      <pre><code>cp contributors/_TEMPLATE.json contributors/your-username.json</code></pre>
+    </li>
+    <li>
+      <h3>Fill it in</h3>
+      <pre><code>{
+  "github": "your-username",
+  "name": "Your Name",
+  "quote": "One line about you, or why you are here.",
+  "interests": ["python", "design", "cybersecurity"],
+  "first_contribution": "2026-10-05"
+}</code></pre>
+      <p><code>github</code> is the only required field. Keep
+      <code>quote</code> under 100 characters and give at most four interests,
+      or your card will not fit.</p>
+    </li>
+    <li>
+      <h3>Check your JSON is valid</h3>
+      <p>A single missing comma breaks the file, and CI will catch it. Check
+      first:</p>
+      <pre><code>python3 -m json.tool contributors/your-username.json</code></pre>
+      <p>If it prints your file back, it is valid. If it prints an error, it
+      tells you which line.</p>
+    </li>
+    <li>
+      <h3>Commit and push</h3>
+      <pre><code>git add contributors/your-username.json
+git commit -m "feat: add your-username to the contributor wall"
+git push origin feat/add-YOUR-USERNAME</code></pre>
+    </li>
+    <li>
+      <h3>Open the pull request</h3>
+      <p>Fill in the template. For this one specific PR you do not need a
+      linked issue — adding yourself to the wall is the welcome task, not a
+      tracked piece of work.</p>
+      <p>Once it is merged, a GitHub Action rebuilds the wall automatically and
+      your card appears here within a minute or two.</p>
+    </li>
+  </ol>
+
+  <div class="callout callout--warn">
+    <p class="callout__title">Do not edit <code>contributors/index.json</code></p>
+    <p>That file is generated by a robot every time the wall changes. If you
+    edit it by hand your change gets overwritten, and you will probably hit a
+    merge conflict on the way. Only add your own file.</p>
+  </div>
+
+  <h2>Why one file each?</h2>
+  <p class="prose">
+    If everyone added a line to a single shared list, the second person to be
+    merged would hit a merge conflict, and the eightieth would hit seventy-nine
+    of them. One file per person means Git never has to reconcile anything.
+  </p>
+  <p class="prose">
+    This is a real technique, not a teaching exercise. You will see the same
+    pattern in changelog folders, Terraform modules, and Kubernetes configs
+    anywhere a large team edits the same project.
+  </p>
+
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <h3>Open Source Launchpad</h3>
+      <p class="muted">Your first pull request starts here.<br>
+      Built by GITHUB Community GITAM.</p>
+    </div>
+    <div>
+      <h3>Learn</h3>
+      <ul>
+        <li><a href="git-basics.html">Git basics</a></li>
+        <li><a href="pr-checklist.html">PR checklist</a></li>
+        <li><a href="wall.html">Contributor wall</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Contribute</h3>
+      <ul>
+        <li><a href="https://github.com/github-community-gitam/open-source-launchpad/issues">Open issues</a></li>
+        <li><a href="https://github.com/github-community-gitam/open-source-launchpad/blob/main/CONTRIBUTING.md">Contributing guide</a></li>
+        <li><a href="https://github.com/github-community-gitam/terminal-arcade">Terminal Arcade</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Hacktoberfest</h3>
+      <ul>
+        <li><a href="https://hacktoberfest.com">Official site</a></li>
+        <li><a href="https://hacktoberfest.com/participation/">The rules</a></li>
+        <li><a href="https://github.com/github-community-gitam">Our org</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="js/copy-code.js"></script>
+<script src="js/wall.js"></script>
+</body>
+</html>

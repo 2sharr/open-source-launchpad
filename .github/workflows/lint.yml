@@ -1,0 +1,146 @@
+# Open Source Launchpad — lint
+#
+# This repo is where people make their first ever pull request, so every check
+# here is written to explain itself. A red X that does not say what to do is
+# worse than no check at all.
+name: Lint
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contributors:
+    name: contributor files are valid
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # The most common first-PR mistake is a stray comma in JSON. This job
+      # exists so the contributor gets told which line, not just "failed".
+      - name: Validate contributors/
+        run: python3 scripts/build_contributors.py --check
+
+  html:
+    name: HTML is well-formed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Validate every page
+        run: |
+          npx --yes html-validate "*.html" || {
+            echo "::error::An HTML page has a problem. The log above names the file and line."
+            echo "Most common causes: a tag that was never closed, or a missing alt attribute on an image."
+            exit 1
+          }
+
+  a11y:
+    name: accessibility basics
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Deliberately simple and dependency-free. It catches the handful of
+      # mistakes that actually come up in a beginner's HTML PR.
+      - name: Check for missing alt text, page titles, and lang
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+
+          failures = []
+
+          for path in sorted(pathlib.Path(".").glob("*.html")):
+              html = path.read_text(encoding="utf-8")
+
+              for match in re.finditer(r"<img\b[^>]*>", html, re.I):
+                  tag = match.group(0)
+                  if not re.search(r'\balt\s*=', tag, re.I):
+                      line = html[: match.start()].count("\n") + 1
+                      failures.append(
+                          f"{path}:{line} — this <img> has no alt attribute.\n"
+                          f"      Add alt=\"a short description\", or alt=\"\" if it is "
+                          f"purely decorative.\n      {tag[:90]}"
+                      )
+
+              if not re.search(r"<html[^>]*\blang\s*=", html, re.I):
+                  failures.append(f'{path} — the <html> tag needs lang="en"')
+
+              if not re.search(r"<title>\s*\S", html, re.I):
+                  failures.append(f"{path} — the page has no <title>")
+
+              if not re.search(r'name\s*=\s*["\']viewport', html, re.I):
+                  failures.append(
+                      f"{path} — missing the viewport meta tag, so the page "
+                      f"will not scale on a phone"
+                  )
+
+          if failures:
+              print("Accessibility problems:\n")
+              for f in failures:
+                  print(f"  {f}\n")
+              print(f"{len(failures)} problem(s). These block the merge, and they are all quick fixes.")
+              sys.exit(1)
+
+          print("Accessibility basics all pass.")
+          PY
+
+  links:
+    name: internal links resolve
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Check that every local href points at a real file
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+          from urllib.parse import urlparse
+
+          root = pathlib.Path(".")
+          failures = []
+
+          for path in sorted(root.glob("*.html")):
+              html = path.read_text(encoding="utf-8")
+              for attr in ("href", "src"):
+                  for match in re.finditer(rf'{attr}\s*=\s*["\']([^"\']+)["\']', html, re.I):
+                      target = match.group(1).strip()
+                      if not target or target.startswith(("#", "mailto:", "tel:", "data:")):
+                          continue
+                      if urlparse(target).scheme in ("http", "https"):
+                          continue
+                      local = (root / target.split("#")[0].split("?")[0]).resolve()
+                      if not local.exists():
+                          line = html[: match.start()].count("\n") + 1
+                          failures.append(f"{path}:{line} — {attr}=\"{target}\" does not exist")
+
+          if failures:
+              print("Broken local links:\n")
+              for f in failures:
+                  print(f"  {f}")
+              print(f"\n{len(failures)} broken link(s). Check the spelling of the filename.")
+              sys.exit(1)
+
+          print("Every local link and asset reference resolves.")
+          PY

@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Node, if you ever run the linters locally
+node_modules/
+package-lock.json
+
+# Python
+__pycache__/
+*.pyc
+
+# Local server artefacts
+.cache/
