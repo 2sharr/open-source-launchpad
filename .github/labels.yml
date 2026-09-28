@@ -48,6 +48,12 @@
 - name: "ci"
   color: "BFD4F2"
   description: "GitHub Actions, linting, automation"
+- name: "test-coverage"
+  color: "0E8A16"
+  description: "Adding or improving tests"
+- name: "accessibility"
+  color: "5319E7"
+  description: "Making the project usable by everyone"
 
 # --- Workflow state ---
 - name: "status: claimed"

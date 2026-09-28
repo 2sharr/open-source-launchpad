@@ -9,6 +9,13 @@ on:
 permissions:
   issues: write
 
+# Serialise claims from the same person. Without this, two /claim comments a few
+# seconds apart both read the "how many do you already have" count before either
+# assignment lands, and the 2-issue cap is bypassed.
+concurrency:
+  group: claim-${{ github.event.comment.user.login }}
+  cancel-in-progress: false
+
 jobs:
   claim:
     # Ignore comments on pull requests, and anything that is not a claim.

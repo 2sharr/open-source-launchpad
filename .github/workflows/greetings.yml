@@ -13,6 +13,12 @@ permissions:
 
 jobs:
   greet:
+    # Skip maintainers. Without this, seeding 30 issues fires 30 pointless runs,
+    # and the run list becomes useless for spotting a real failure.
+    if: >
+      github.event.issue.author_association != 'OWNER' &&
+      github.event.issue.author_association != 'MEMBER' &&
+      github.event.issue.author_association != 'COLLABORATOR'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/first-interaction@v1
